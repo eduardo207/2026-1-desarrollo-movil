@@ -1,4 +1,4 @@
 
 export default function generateId(): string {
-  return crypto.randomUUID();
+  return Math.random().toString(36).substr(2, 9);
 }

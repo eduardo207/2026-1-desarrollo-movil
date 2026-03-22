@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
 import CompletedPage from '../pages/CompletedPage'
-import ErasedPage from '../pages/ErasedPage' 
+import PendingPage from '../pages/PendingPage' 
 import Layout from '../components/layout/Layout'
 
 export default function Router() {
@@ -11,7 +11,7 @@ export default function Router() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/completed" element={<CompletedPage />} />
-          <Route path="/erased" element={<ErasedPage />} />
+          <Route path="/pending" element={<PendingPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

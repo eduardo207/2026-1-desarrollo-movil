@@ -20,8 +20,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             </li>
             <li>
-              <Link to="/erased" className="text-white hover:text-gray-300">
-                Eliminadas
+              <Link to="/pending" className="text-white hover:text-gray-300">
+                Pendientes
               </Link>
             </li>
           </ul>
