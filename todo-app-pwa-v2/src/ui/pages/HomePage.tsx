@@ -11,7 +11,7 @@ function HomePage() {
 
   const addTask = (title: string) => {}
   const onComplete = (id: string) => {}
-  const onRegister = () => {}
+  const onRegister = async (name: string, studentKey: string) => {}
 
   const tasks: Task[] = [
     {
