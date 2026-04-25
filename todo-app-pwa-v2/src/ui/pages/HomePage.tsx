@@ -36,13 +36,26 @@ function HomePage() {
     studentKey: '2026-1'
   }
 
+  const students: Student[] = [
+    {
+      id: '123',
+      name: 'Juan Perez',
+      studentKey: '2026-1'
+    },
+    {
+      id: '1234',
+      name: 'Jerson Quiñonez',
+      studentKey: '2026-2'
+    }
+  ]
+
   return (
     <div className="flex flex-col h-screen gap-4">
       <header className="bg-gray-800 text-white p-4">
         <h1 className="text-xl font-bold">TO DO App</h1>
       </header>
       <StudentInfo student={student} onRegisterStudentOpen={() => setIsRegisterDialogOpen(true)} />
-      <TaskForm addTask={addTask}/>
+      <TaskForm addTask={addTask} students={students} />
       <h3>Lista de tareas</h3>
       <TaskList tasks={tasks} onComplete={onComplete} />
       <StudentRegisterDialog 
