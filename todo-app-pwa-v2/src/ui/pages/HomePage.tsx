@@ -1,53 +1,26 @@
 import TaskForm from "../components/task/TaskForm"
 import TaskList from "../components/task/TaskList"
-import type {Task} from "../../domain/task/task.type"
-import type {Student} from "../../domain/student/student.type"
 import StudentInfo from "../components/student/StudentInfo"
 import StudentRegisterDialog from "../components/student/StudentRegisterDialog"
-import {useState} from 'react';
-
+import useTaskActions from "../../application/task/useTaskActions";
+import useStudentActions from "../../application/student/useStudentActions";
 function HomePage() {
-  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
 
-  const addTask = (title: string) => {}
-  const onComplete = (id: string) => {}
-  const onRegister = async (name: string, studentKey: string) => {}
+  const {
+    student,
+    students,
+    isRegisterOpen,
+    openRegisterDialog,
+    closeRegisterDialog,
+    registerCurrentStudent,
+  } = useStudentActions();
 
-  const tasks: Task[] = [
-    {
-      id: '1',
-      title: 'Tarea 1',
-      completed: false,
-      assignedto: '123',
-      assignedtoName: 'Juan Perez'
-    },
-    {
-      id: '2',
-      title: 'Tarea 2',
-      completed: true,
-      assignedto: '1234',
-      assignedtoName: 'Jerson Quiñonez'
-    }
-  ]
-
-  const student: Student = {
-    id: '123',
-    name: 'Juan Perez',
-    studentKey: '2026-1'
-  }
-
-  const students: Student[] = [
-    {
-      id: '123',
-      name: 'Juan Perez',
-      studentKey: '2026-1'
-    },
-    {
-      id: '1234',
-      name: 'Jerson Quiñonez',
-      studentKey: '2026-2'
-    }
-  ]
+  const {
+    tasks,
+    isLoading,
+    addTask,
+    onComplete,
+  } = useTaskActions();
 
   return (
     <div className="flex flex-col min-h-screen" style={{ background: '#f5f5f7' }}>
@@ -72,7 +45,7 @@ function HomePage() {
       >
         <StudentInfo
           student={student}
-          onRegisterStudentOpen={() => setIsRegisterDialogOpen(true)}
+          onRegisterStudentOpen={openRegisterDialog}
         />
 
         <section aria-label="Agregar tarea">
@@ -97,9 +70,9 @@ function HomePage() {
       </main>
 
       <StudentRegisterDialog
-        isOpen={isRegisterDialogOpen}
-        onClose={() => setIsRegisterDialogOpen(false)}
-        onRegister={onRegister}
+        isOpen={isRegisterOpen}
+        onClose={closeRegisterDialog}
+        onRegister={registerCurrentStudent}
       />
 
       <footer

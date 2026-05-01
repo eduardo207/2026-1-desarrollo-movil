@@ -2,8 +2,8 @@ import type { Task } from "../../../domain/task/task.type"
 
 type Props = {
   task: Task;
-  onComplete: (id: string) => void;
-}
+  onComplete: (id: string, completed: boolean) => void;
+};
 
 export default function TaskItem({ task, onComplete }: Props) {
   return (
@@ -35,7 +35,7 @@ export default function TaskItem({ task, onComplete }: Props) {
 
       <button
         type="button"
-        onClick={() => onComplete(task.id)}
+        onClick={() => onComplete(task.id, task.completed)}
         disabled={task.completed}
         aria-label={`Marcar "${task.title}" como completada`}
         aria-disabled={task.completed}

@@ -13,6 +13,8 @@ export default function StudentRegisterDialog({
 }: Props) {
   const [name, setName] = useState('');
   const [studentKey, setStudentKey] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -27,10 +29,19 @@ export default function StudentRegisterDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onRegister(name.trim(), studentKey.trim());
-    setName('');
-    setStudentKey('');
-    onClose();
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await onRegister(name.trim(), studentKey.trim());
+      setName('');
+      setStudentKey('');
+      onClose();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al registrar. Verifica tu conexión.';
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -152,27 +163,44 @@ export default function StudentRegisterDialog({
             />
           </div>
 
+          {error && (
+            <p
+              role="alert"
+              style={{
+                fontSize: '13px',
+                color: '#ff3b30',
+                background: 'rgba(255, 59, 48, 0.08)',
+                borderRadius: '8px',
+                padding: '10px 12px',
+                margin: 0,
+              }}
+            >
+              {error}
+            </p>
+          )}
+
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full transition-all duration-200"
             style={{
-              background: '#0071e3',
+              background: isSubmitting ? '#a0c4f1' : '#0071e3',
               color: '#ffffff',
               borderRadius: '980px',
               padding: '12px 24px',
               fontSize: '15px',
               fontWeight: 500,
               border: 'none',
-              cursor: 'pointer',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
               letterSpacing: '-0.01em',
               marginTop: '8px',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#0077ed'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#0071e3'; }}
-            onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.background = '#006bce'; }}
-            onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.background = '#0077ed'; }}
+            onMouseEnter={e => { if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.background = '#0077ed'; }}
+            onMouseLeave={e => { if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.background = '#0071e3'; }}
+            onMouseDown={e => { if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.background = '#006bce'; }}
+            onMouseUp={e => { if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.background = '#0077ed'; }}
           >
-            Registrar
+            {isSubmitting ? 'Registrando…' : 'Registrar'}
           </button>
         </form>
       </div>

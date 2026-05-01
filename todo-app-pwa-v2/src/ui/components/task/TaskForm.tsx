@@ -2,20 +2,30 @@ import { useState } from 'react'
 import { Student } from '../../../domain/student/student.type';
 
 type Props = {
-  addTask: (title: string) => void;
   students: Student[];
-}
+  addTask: (
+    title: string,
+    assignedTo: string,
+    assignedToName: string
+  ) => Promise<void>;
+};
 
-export default function TaskForm({ addTask, students }: Props) {
+export default function TaskForm({ students, addTask }: Props) {
   const [title, setTitle] = useState('');
-  const [selectedStudent, setSelectedStudent] = useState('');
+  const [assignedTo, setAssignedTo] = useState('');
 
-  const addTaskSubmit = (e: React.FormEvent) => {
+  const addTaskSubmit = async (e: React.FormEvent) =>{
     e.preventDefault();
+    
     if (!title.trim()) return;
-    addTask(title.trim());
-    setTitle('');
-    setSelectedStudent('');
+
+    try {
+      await addTask(title.trim(), assignedTo, students.find(s => s.id === assignedTo)?.name || '');
+      setTitle("");
+      setAssignedTo("");
+    } catch (err) {
+      console.error("Error al agregar tarea:", err);
+    }
   }
 
   return (
@@ -64,15 +74,15 @@ export default function TaskForm({ addTask, students }: Props) {
         </label>
         <select
           id="task-student"
-          value={selectedStudent}
-          onChange={(e) => setSelectedStudent(e.target.value)}
+          value={assignedTo}
+          onChange={(e) => setAssignedTo(e.target.value)}
           className="apple-input w-full transition-all duration-200"
           style={{
             borderRadius: '8px',
             border: '1px solid rgba(0, 0, 0, 0.15)',
             padding: '8px 12px',
             fontSize: '15px',
-            color: selectedStudent ? '#1d1d1f' : '#6e6e73',
+            color: assignedTo ? '#1d1d1f' : '#6e6e73',
             background: '#ffffff',
             appearance: 'none',
             cursor: 'pointer',

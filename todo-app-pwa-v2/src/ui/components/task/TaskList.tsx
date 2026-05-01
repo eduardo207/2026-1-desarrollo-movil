@@ -3,8 +3,8 @@ import type { Task } from "../../../domain/task/task.type"
 
 type Props = {
   tasks: Task[];
-  onComplete: (id: string) => void;
-}
+  onComplete: (id: string, completed: boolean) => void;
+}; 
 
 export default function TaskList({ tasks, onComplete }: Props) {
   if (tasks.length === 0) {

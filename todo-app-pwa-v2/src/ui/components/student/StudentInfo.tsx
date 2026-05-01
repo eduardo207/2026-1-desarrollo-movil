@@ -1,7 +1,7 @@
 import type { Student } from "../../../domain/student/student.type"
 
 type Props = {
-  student: Student;
+  student: Student | null;
   onRegisterStudentOpen: () => void;
 }
 
@@ -20,13 +20,13 @@ export default function StudentInfo({ student, onRegisterStudentOpen }: Props) {
         <div className="flex gap-2 items-baseline">
           <dt style={{ fontSize: '13px', color: '#6e6e73', minWidth: '64px' }}>Nombre</dt>
           <dd style={{ fontSize: '15px', fontWeight: 500, color: '#1d1d1f', margin: 0 }}>
-            {student.name}
+            {student?.name ?? "No registrado"}
           </dd>
         </div>
         <div className="flex gap-2 items-baseline">
           <dt style={{ fontSize: '13px', color: '#6e6e73', minWidth: '64px' }}>Matrícula</dt>
           <dd style={{ fontSize: '15px', fontWeight: 500, color: '#1d1d1f', margin: 0 }}>
-            {student.studentKey}
+            {student?.studentKey ?? "No registrado"}
           </dd>
         </div>
       </dl>
